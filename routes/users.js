@@ -28,7 +28,7 @@ router.post('/signUp', function(req, res, next) {
     res.render('signUp', {errors: errors});
   }
   else {
-    Helper.addUser(req.body.email, req.body.password).then(function (data) {
+    Helper.addUser2(req.body.email, req.body.password, res).then(function (data) {
       if(data.errors) {
         res.render('signUp', {errors: data.errors});
       }
