@@ -10,6 +10,6 @@ block content
     p Password Confirmation
       input(type='text' name='passConf' id='passConf')
     button(type='Submit' class='submitButton') Submit
-  p
-    include errors
- 
+  if errors
+    for error in errors
+      p= error 

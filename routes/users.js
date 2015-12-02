@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var Helper = require('../lib/scripts.js');
+var Promise = require('promise');
 
 /* GET users listing. */
 // router.get('/', function(req, res, next) {
@@ -28,15 +29,31 @@ router.post('/signUp', function(req, res, next) {
     res.render('signUp', {errors: errors});
   }
   else {
-    Helper.addUser2(req.body.email, req.body.password, res).then(function (data) {
-      if(data.errors) {
-        res.render('signUp', {errors: data.errors});
-      }
-      else {
-        req.session.email = req.body.email;
-        res.redirect('/users');
-      }
+    // Helper.addUser(req.body.email, req.body.password, res)
+    // .then(function (data) {
+    //   console.log("Data.errors", data.errors);
+    //   if(data.errors) {
+    //   res.render('signUp', {errors: data.errors});
+    //   }
+    //   else {
+    //     // REVISE with better session use, JWT/database holder *
+    //     // req.session.email = req.body.email;
+    //     res.redirect('/');
+    //   }
+    // });
+    Helper.checkIfUser(req.body.email)
+    .then(function(){
+      Helper.createUser(req.body.email, req.body.password)
+      .then(function(data){
+        res.redirect('/')
+      })
+    }, function(err){
+      errors = err.errors
+      res.render('signUp', {errors: errors})
     });
+
+
+
   }
 });
 
