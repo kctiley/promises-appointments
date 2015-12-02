@@ -6,9 +6,9 @@ block content
     p Email
       input(type='text' name='email' id='email')
     p Password
-      input(type='text' name='password' id='password')
+      input(type='password' name='password' id='password')
     button(type='Submit' class='submitButton') Submit
   if errors
     for error in errors
-      p= error
+      p(class='error')= error
  
