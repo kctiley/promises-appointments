@@ -51,15 +51,36 @@ router.post('/signUp', function(req, res, next) {
       errors = err.errors
       res.render('signUp', {errors: errors})
     });
-
-
-
   }
 });
 
 router.get('/logIn', function(req, res, next) {
   res.render('logIn');
 });
+
+// router.post('/login', function(req, res, next) {
+//   var errors = [];
+//   if(!req.body.email) {
+//     errors.push('Email is required');
+//   }
+//   if(!req.body.password) {
+//     errors.push('Password is required');
+//   }
+//   if(errors.length) {
+//     res.render('logIn', {errors: errors});
+//   }
+//   else {
+//     Helper.signin(req.body.email, req.body.password).then(function (data) {
+//       if(data.errors) {
+//         res.render('login', {errors: data.errors});
+//       }
+//       else {
+//         req.session.email = req.body.email;
+//         res.redirect('/users');
+//       }
+//     });
+//   }  
+// });
 
 router.post('/login', function(req, res, next) {
   var errors = [];
@@ -73,14 +94,13 @@ router.post('/login', function(req, res, next) {
     res.render('logIn', {errors: errors});
   }
   else {
-    Helper.signin(req.body.email, req.body.password).then(function (data) {
-      if(data.errors) {
-        res.render('login', {errors: data.errors});
-      }
-      else {
-        req.session.email = req.body.email;
-        res.redirect('/users');
-      }
+    Helper.logInUser(req.body.email, req.body.password)
+    .then(function (data) {
+      // req.session.email =  req.body.email;
+      res.redirect('/');
+    }, function(err){
+      errors = err.errors;
+      res.render('login', {errors: errors})
     });
   }  
 });
